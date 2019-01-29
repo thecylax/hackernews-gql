@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+    <!-- Menu lateral -->
+    <div class="col s3">
+        <div class="collection with-header">
+            <h5 class="collection-header">Query</h5>
+            {% for type in schema.queryType.fields %}
+            <a class="collection-item" href="{{ type.name }}.html">{{ type.name }}</a>
+            {% endfor %}
+
+            <h5 class="collection-header">Mutation</h5>
+            {% for type in schema.mutationType.fields %}
+            <a class="collection-item" href="{{ type.name }}.html">{{ type.name }}</a>
+            {% endfor %}
+
+            {% for key, value in menu.items %}
+            <h5 class="collection-header">{{ key|lower|capfirst }}</h5>
+                {% for item in value %}
+                <a class="collection-item" href="{{ item }}.html">{{ item }}</a>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Detalhes -->
+    <div class="col s9 section">
+        <h2>
+            {{ foo.name }}
+            {% if foo.kind %}
+            <span class="new badge" data-badge-caption="">
+                {{ foo.kind }}
+            </span>
+            {% endif %}
+
+            {% if foo.type %}
+            <span class="new badge purple" data-badge-caption="">
+                {{ foo.type.name }}
+            </span>
+            {% endif %}
+        </h2>
+        <blockquote>{{ foo.description }}</blockquote>
+
+
+        {% if foo.inputFields %}
+        <h4>Input Fields</h4>
+        <ul>
+            {% for field in foo.inputFields %}
+            <li>
+                <strong>{{ field.name }}</strong> ({{ field.description }}) {{ field.type.name }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if foo.fields %}
+        <h4>Fields</h4>
+        <ul>
+            {% for field in foo.fields %}
+            <li>
+                <div>
+                    <strong>{{ field.name }}</strong> ({{ field.description }})
+                    <a href="{{ field.type.name }}.html">{{ field.type.name }}</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if foo.interfaces %}
+        <h4>Implements</h4>
+        <ul>
+            {% for object in foo.interfaces %}
+            <li><strong>{{ object.name }}</strong> ({{ object.description }})</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if foo.possibleTypes %}
+        <h4>Implemented by</h4>
+        <ul>
+            {% for object in foo.possibleTypes %}
+            <li><strong>{{ object.name }}</strong> ({{ object.description }})</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {{ foo }}
+        {% if foo.args %}
+        <h4>Arguments</h4>
+        <ul>
+            {% for object in foo.args %}
+            <li>
+                <div>
+                    <strong>{{ object.name }}</strong> ({{ object.description }})
+                    <a href="{{ foo.type.name }}.html">{{ foo.type.name }}</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

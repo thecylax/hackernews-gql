@@ -1,0 +1,202 @@
+input CreateLinkInput {
+  """URL a ser incluída"""
+  url: String
+
+  """Descrição da URL"""
+  description: String
+  clientMutationId: String
+}
+
+type CreateLinkPayload {
+  link: LinkNode
+  clientMutationId: String
+}
+
+type CreateUser {
+  user: UserType
+}
+
+input CreateVoteInput {
+  """ID do link a ser votado."""
+  linkId: ID
+  clientMutationId: String
+}
+
+type CreateVotePayload {
+  user: UserType
+  link: LinkNode
+  clientMutationId: String
+}
+
+"""
+The `DateTime` scalar type represents a DateTime
+value as specified by
+[iso8601](https://en.wikipedia.org/wiki/ISO_8601).
+"""
+scalar DateTime
+
+"""
+The `GenericScalar` scalar type represents a generic
+GraphQL scalar value that could be:
+String, Boolean, Int, Float, List or Object.
+"""
+scalar GenericScalar
+
+type LinkConnection {
+  pageInfo: PageInfo!
+  edges: [LinkEdge]!
+}
+
+type LinkEdge {
+  """The item at the end of the edge"""
+  node: LinkNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+"""Model que representa links."""
+type LinkNode implements Node {
+  """The ID of the object."""
+  id: ID!
+  url: String!
+  description: String!
+  postedBy: UserType
+  votes(before: String, after: String, first: Int, last: Int): VoteNodeConnection
+}
+
+type LinkNodeConnection {
+  pageInfo: PageInfo!
+  edges: [LinkNodeEdge]!
+}
+
+type LinkNodeEdge {
+  """The item at the end of the edge"""
+  node: LinkNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+
+type Mutation {
+  createUser(
+    """Email do usuário"""
+    email: String!
+
+    """Senha do usuário"""
+    password: String!
+
+    """Nome do usuário"""
+    username: String!
+  ): CreateUser
+
+  """Adiciona um novo link."""
+  createLink(input: CreateLinkInput!): CreateLinkPayload
+
+  """Vota num link."""
+  createVote(input: CreateVoteInput!): CreateVotePayload
+  tokenAuth(username: String!, password: String!): ObtainJSONWebToken
+  verifyToken(token: String!): Verify
+  refreshToken(token: String!): Refresh
+}
+
+"""An object with an ID"""
+interface Node {
+  """The ID of the object."""
+  id: ID!
+}
+
+"""Obtain JSON Web Token mutation"""
+type ObtainJSONWebToken {
+  token: String
+}
+
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Query {
+  """Função viewer."""
+  viewer: UserType
+
+  """Função users."""
+  users: [UserType]
+
+  """The ID of the object"""
+  link(id: ID!): LinkNode
+
+  """Função links."""
+  links(before: String, after: String, first: Int, last: Int): LinkConnection
+}
+
+type Refresh {
+  token: String
+  payload: GenericScalar
+}
+
+"""Modelo de usuários"""
+type UserType {
+  id: ID!
+  password: String!
+  lastLogin: DateTime
+
+  """
+  Designates that this user has all permissions without explicitly assigning them.
+  """
+  isSuperuser: Boolean!
+
+  """
+  Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+  """
+  username: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+
+  """Designates whether the user can log into this admin site."""
+  isStaff: Boolean!
+
+  """
+  Designates whether this user should be treated as active. Unselect this instead of deleting accounts.
+  """
+  isActive: Boolean!
+  dateJoined: DateTime!
+  linkSet(before: String, after: String, first: Int, last: Int): LinkNodeConnection
+  voteSet(before: String, after: String, first: Int, last: Int): VoteNodeConnection
+}
+
+type Verify {
+  payload: GenericScalar
+}
+
+"""Model que representa votos."""
+type VoteNode implements Node {
+  """The ID of the object."""
+  id: ID!
+  user: UserType!
+  link: LinkNode!
+}
+
+type VoteNodeConnection {
+  pageInfo: PageInfo!
+  edges: [VoteNodeEdge]!
+}
+
+type VoteNodeEdge {
+  """The item at the end of the edge"""
+  node: VoteNode
+
+  """A cursor for use in pagination"""
+  cursor: String!
+}
+

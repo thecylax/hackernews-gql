@@ -1,0 +1,22 @@
+<nav>
+    <div class="nav-wrapper">
+        <a href="#" class="brand-logo">
+            {{ foo.name }} - {{ foo.description }}
+        </a>
+    </div>
+</nav>
+
+            <h5 class="collection-header">Query</h5>
+            {% for type in schema.queryType.fields %}
+            <a class="collection-item" href="{{ type.name }}.html">{{ type.name }}</a>
+            {% endfor %}
+
+            <h5 class="collection-header">Mutation</h5>
+            {% for type in schema.mutationType.fields %}
+            <a class="collection-item" href="{{ type.name }}.html">{{ type.name }}</a>
+            {% endfor %}
+
+            <h5 class="collection-header">Objects</h5>
+            {% for type in schema.types %}
+            <a class="collection-item" href="{{ type.name }}.html">{{ type.name }}</a>
+            {% endfor %}
