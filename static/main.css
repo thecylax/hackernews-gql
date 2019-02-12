@@ -1,5 +1,20 @@
-.sidebar {
+.badge.new {
+    font-weight: bold !important;
 }
-.content {
 
+table.compact-table {
+    border-collapse: collapse;
+}
+
+table.compact-table td {
+    padding: 0%;
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+}
+
+table.compact-table th {
+    border-bottom: 2px solid;
+    padding: 0%;
+    width: 20%;
 }
