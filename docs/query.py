@@ -16,10 +16,12 @@ query {
 				  description
           type {
             name
+            kind
           }
 				}
         type {
           name
+          kind
           description
         }
       }
@@ -34,10 +36,15 @@ query {
 				  description
           type {
             name
+            ofType {
+              name
+              kind
+            }
           }
 				}
         type {
           name
+          kind
           description
         }
       }
@@ -68,6 +75,7 @@ query t {
       name
       description
       type {
+        kind
         name
         description
       }
@@ -75,7 +83,14 @@ query t {
         name
         description
         type {
+          kind
           name
+          fields {
+            name
+          }
+          ofType {
+            name
+          }
         }
       }
     }
@@ -84,6 +99,7 @@ query t {
       description
       type {
         name
+        kind
       }
     }
     interfaces {
@@ -91,6 +107,10 @@ query t {
       description
     }
     possibleTypes {
+      name
+      description
+    }
+    enumValues {
       name
       description
     }
